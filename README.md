@@ -1,1 +1,13 @@
-# cog-stable-diffusion-img2img
+# cog-stable-diffusion-img2img-v2
+
+
+[![Replicate](https://replicate.com/replicate/stable-diffusion-img2img/badge)](https://replicate.com/replicate/stable-diffusion-img2img) 
+
+This is an implementation of the [Diffusers Stable Diffusion v2](https://huggingface.co/stabilityai/stable-diffusion-2) as a Cog model. [Cog packages machine learning models as standard containers.](https://github.com/replicate/cog)
+
+
+    cog run script/download-weights 
+
+Then, you can run predictions:
+
+    cog predict -i prompt="..." -i image=@... 
