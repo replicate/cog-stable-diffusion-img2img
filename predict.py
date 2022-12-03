@@ -3,17 +3,19 @@ from typing import List
 
 import torch
 from diffusers import (
-    DiffusionPipeline,
+    StableDiffusionPipeline,
     StableDiffusionImg2ImgPipeline,
+    PNDMScheduler,
     LMSDiscreteScheduler,
     DDIMScheduler,
     EulerDiscreteScheduler,
+    EulerAncestralDiscreteScheduler,
     DPMSolverMultistepScheduler,
 )
 from PIL import Image
 from cog import BasePredictor, Input, Path
 
-MODEL_ID = "stabilityai/stable-diffusion-2"
+MODEL_ID = "runwayml/stable-diffusion-v1-5"
 MODEL_CACHE = "diffusers-cache"
 
 
@@ -21,7 +23,7 @@ class Predictor(BasePredictor):
     def setup(self):
         """Load the model into memory to make running multiple predictions efficient"""
         print("Loading pipeline...")
-        self.txt2img_pipe = DiffusionPipeline.from_pretrained(
+        self.txt2img_pipe = StableDiffusionPipeline.from_pretrained(
             MODEL_ID,
             cache_dir=MODEL_CACHE,
             local_files_only=True,
@@ -49,7 +51,7 @@ class Predictor(BasePredictor):
             default=None,
         ),
         image: Path = Input(
-            description="Inital image to generate variations of. Supproting images size with 512x512",
+            description="Inital image to generate variations of",
         ),
         width: int = Input(
             description="Width of output image. Maximum size is 1024x768 or 768x1024 because of memory limits",
@@ -79,7 +81,14 @@ class Predictor(BasePredictor):
         ),
         scheduler: str = Input(
             default="DPMSolverMultistep",
-            choices=["DDIM", "K_EULER", "DPMSolverMultistep"],
+            choices=[
+                "DDIM",
+                "K_EULER",
+                "DPMSolverMultistep",
+                "PNDM",
+                "KLMS",
+                "K_EULER_ANCESTRAL",
+            ],
             description="Choose a scheduler.",
         ),
         seed: int = Input(
@@ -118,7 +127,10 @@ class Predictor(BasePredictor):
 
 def make_scheduler(name, config):
     return {
+        "PNDM": PNDMScheduler.from_config(config),
+        "KLMS": LMSDiscreteScheduler.from_config(config),
         "DDIM": DDIMScheduler.from_config(config),
         "K_EULER": EulerDiscreteScheduler.from_config(config),
+        "K_EULER_ANCESTRAL": EulerAncestralDiscreteScheduler.from_config(config),
         "DPMSolverMultistep": DPMSolverMultistepScheduler.from_config(config),
     }[name]

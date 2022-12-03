@@ -1,14 +1,17 @@
 #!/usr/bin/env python
 
 import os
-from diffusers import DiffusionPipeline
+import sys
 
+import torch
+from diffusers import StableDiffusionPipeline
 
-model_id = "stabilityai/stable-diffusion-2"
 MODEL_CACHE = "diffusers-cache"
 os.makedirs(MODEL_CACHE, exist_ok=True)
 
-pipe = DiffusionPipeline.from_pretrained(
-    model_id,
+
+pipe = StableDiffusionPipeline.from_pretrained(
+    "runwayml/stable-diffusion-v1-5",
     cache_dir=MODEL_CACHE,
+    use_auth_token=sys.argv[1],
 )
