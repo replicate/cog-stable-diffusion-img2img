@@ -4,7 +4,7 @@ import os
 from diffusers import DiffusionPipeline
 
 
-model_id = "stabilityai/stable-diffusion-2"
+model_id = "stabilityai/stable-diffusion-2-1"
 MODEL_CACHE = "diffusers-cache"
 os.makedirs(MODEL_CACHE, exist_ok=True)
 
