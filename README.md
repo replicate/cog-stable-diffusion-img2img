@@ -1,4 +1,4 @@
-# cog-stable-diffusion-img2img-v2.1
+# cog-stable-diffusion-img2img
 
 
 [![Replicate](https://replicate.com/replicate/stable-diffusion-img2img/badge)](https://replicate.com/replicate/stable-diffusion-img2img) 
