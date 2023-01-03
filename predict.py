@@ -50,7 +50,7 @@ class Predictor(BasePredictor):
             default=None,
         ),
         image: Path = Input(
-            description="Inital image to generate variations of.",
+            description="A starting image from which to generate variations (aka 'img2img')"
         ),
         prompt_strength: float = Input(
             description="Prompt strength when providing the image. 1.0 corresponds to full destruction of information in init image",
